@@ -37,7 +37,7 @@ message CancelHotelReservationCommand {
 message HotelReservation {
     string reservationId = 1;
     string hotel = 2;
-    roomNumber = 3;
+    string roomNumber = 3;
 }
 
 message GetHotelReservationCommand {
@@ -57,7 +57,7 @@ message CancelCarReservationCommand {
 message CarReservation {
     string reservationId = 1;
     string company = 2;
-    type = 3;
+    string carType = 3;
 }
 
 message GetCarReservationCommand {

@@ -2,24 +2,31 @@
 
  import com.google.protobuf.Empty;
  import io.cloudstate.javasupport.EntityId;
- import io.cloudstate.javasupport.eventsourced.*;
+ import io.cloudstate.javasupport.eventsourced.CommandContext;
+ import io.cloudstate.javasupport.eventsourced.CommandHandler;
+ import io.cloudstate.javasupport.eventsourced.EventHandler;
  import io.cloudstate.javasupport.eventsourced.EventSourcedEntity;
 
  import bookings.*;
  import bookings.domain.*;
 
  /**
-  * A flight reservation domain entity.
+  * A hotel reservation domain entity.
   */
  @EventSourcedEntity
- public class FlightReservationEntity {
+ public class HotelReservationEntity {
 
      private String reservationId;
 
      /**
-      * The flight number being reserved.
+      * The hotel being reserved.
       */
-     private String flightNumber;
+     private String hotel;
+
+     /**
+      * The room being reserved.
+      */
+     private String roomNumber;
 
      /**
       * This reservation has received the reserve command and is in the reserved state.
@@ -35,7 +42,7 @@
       * Constructor.
       * @param reservationId The entity id will be the same as this.
       */
-     public FlightReservationEntity(@EntityId String reservationId) {
+     public HotelReservationEntity(@EntityId String reservationId) {
          this.reservationId = reservationId;
      }
 
@@ -43,16 +50,17 @@
       * Put this entity in the reserved state and emit event.
       */
      @CommandHandler
-     public Empty reserveFlightHandler(Bookings.ReserveFlightCommand cmd, CommandContext ctx) {
+     public Empty reserveHotelHandler(Bookings.ReserveHotelCommand cmd, CommandContext ctx) {
          if (reserved) {
-             ctx.fail("Flight already reserved");
+             ctx.fail("Hotel room already reserved");
          } else if (cancelled) {
-             ctx.fail("Cancelled flight cannot be reserved again.");
+             ctx.fail("Cancelled hotel room cannot be reserved again.");
          }
 
-         ctx.emit(Domain.FlightReserved.newBuilder()
+         ctx.emit(Domain.HotelReserved.newBuilder()
                  .setReservationId(cmd.getReservationId())
-                 .setFlightNumber(cmd.getFlightNumber()).build());
+                 .setHotel(cmd.getHotel())
+                 .setRoomNumber(cmd.getRoomNumber()).build());
 
          return Empty.getDefaultInstance();
      }
@@ -61,22 +69,23 @@
       * Handle reserved event previously emitted.
       */
      @EventHandler
-     public void flightReservedHandler(Domain.FlightReserved flightReserved) {
+     public void hotelReservedHandler(Domain.HotelReserved hotelReserved) {
          reserved = true;
-         flightNumber = flightReserved.getFlightNumber();
+         hotel = hotelReserved.getHotel();
+         roomNumber = hotelReserved.getRoomNumber();
      }
 
      /**
       * Put this entity in the cancelled state and emit event.
       */
      @CommandHandler
-     public Empty cancelFlightHandler(Bookings.CancelFlightReservationCommand cmd, CommandContext ctx) {
+     public Empty cancelHotelHandler(Bookings.CancelHotelReservationCommand cmd, CommandContext ctx) {
          if (!reserved) {
-             ctx.fail("Flight must be reserved before it can be cancelled.");
+             ctx.fail("Hotel room must be reserved before it can be cancelled.");
          } else if (cancelled) {
-             ctx.fail("Cancelled flight cannot be cancelled again.");
+             ctx.fail("Cancelled hotel room cannot be cancelled again.");
          }
-         ctx.emit(Domain.FlightCancelled.newBuilder()
+         ctx.emit(Domain.HotelCancelled.newBuilder()
                  .setReservationId(cmd.getReservationId()).build());
 
          return Empty.getDefaultInstance();
@@ -86,7 +95,7 @@
       * Handle cancelled event previously emitted.
       */
      @EventHandler
-     public void flightCancelledHandler(Domain.FlightCancelled flightCancelled) {
+     public void hotelCancelledHandler(Domain.HotelCancelled hotelCancelled) {
          cancelled = true;
      }
  }
