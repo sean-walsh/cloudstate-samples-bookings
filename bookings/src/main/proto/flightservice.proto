@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+import "cloudstate/entity_key.proto";
+
+package flightservice;
+
+option java_package = "flightservice";
+
+message ReserveFlightCommand {
+    string reservationId = 1 [(.cloudstate.entity_key) = true];
+    string flightNumber = 2;
+}
+
+message CancelFlightReservationCommand {
+    string reservationId = 1 [(.cloudstate.entity_key) = true];
+}
+
+message FlightReservation {
+    string reservationId = 1;
+    string flightNumber = 2;
+}
+
+message GetFlightReservationCommand {
+    string reservationId = 1 [(.cloudstate.entity_key) = true];
+}
+
+message Empty {
+}
+
+service FlightBookingService {
+    rpc ReserveFlight(ReserveFlightCommand) returns (stream Empty);
+
+    rpc CancelFlightReservation(CancelFlightReservationCommand) returns (stream Empty);
+
+    rpc GetFlightReservation(GetFlightReservationCommand) returns (FlightReservation);
+}

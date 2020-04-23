@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+import "cloudstate/entity_key.proto";
+
+package flightdomain;
+
+option java_package = "flightdomain";
+
+message FlightReserved {
+    string reservationId = 1;
+    string flightNumber = 2;
+}
+
+message FlightCancelled {
+    string reservationId = 1;
+}

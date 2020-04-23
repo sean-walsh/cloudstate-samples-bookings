@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+import "cloudstate/entity_key.proto";
+
+package cardomain;
+
+option java_package = "cardomain";
+
+message CarReserved {
+    string reservationId = 1;
+    string company = 2;
+    string carType = 3;
+}
+
+message CarCancelled {
+    string reservationId = 1;
+}

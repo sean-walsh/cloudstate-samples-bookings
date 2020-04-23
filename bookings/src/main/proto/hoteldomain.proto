@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+import "cloudstate/entity_key.proto";
+
+package hoteldomain;
+
+option java_package = "hoteldomain";
+
+message HotelReserved {
+    string reservationId = 1;
+    string hotel = 2;
+    string roomNumber = 3;
+}
+
+message HotelCancelled {
+    string reservationId = 1;
+}

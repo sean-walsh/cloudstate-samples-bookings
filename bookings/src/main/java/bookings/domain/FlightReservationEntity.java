@@ -5,8 +5,8 @@
  import io.cloudstate.javasupport.eventsourced.*;
  import io.cloudstate.javasupport.eventsourced.EventSourcedEntity;
 
- import bookings.*;
- import bookings.domain.*;
+ import flightservice.*;
+ import flightdomain.*;
 
  /**
   * A flight reservation domain entity.
@@ -43,14 +43,14 @@
       * Put this entity in the reserved state and emit event.
       */
      @CommandHandler
-     public Empty reserveFlightHandler(Bookings.ReserveFlightCommand cmd, CommandContext ctx) {
+     public Empty reserveFlightHandler(Flightservice.ReserveFlightCommand cmd, CommandContext ctx) {
          if (reserved) {
              ctx.fail("Flight already reserved");
          } else if (cancelled) {
              ctx.fail("Cancelled flight cannot be reserved again.");
          }
 
-         ctx.emit(Domain.FlightReserved.newBuilder()
+         ctx.emit(Flightdomain.FlightReserved.newBuilder()
                  .setReservationId(cmd.getReservationId())
                  .setFlightNumber(cmd.getFlightNumber()).build());
 
@@ -61,7 +61,7 @@
       * Handle reserved event previously emitted.
       */
      @EventHandler
-     public void flightReservedHandler(Domain.FlightReserved flightReserved) {
+     public void flightReservedHandler(Flightdomain.FlightReserved flightReserved) {
          reserved = true;
          flightNumber = flightReserved.getFlightNumber();
      }
@@ -70,13 +70,13 @@
       * Put this entity in the cancelled state and emit event.
       */
      @CommandHandler
-     public Empty cancelFlightHandler(Bookings.CancelFlightReservationCommand cmd, CommandContext ctx) {
+     public Empty cancelFlightHandler(Flightservice.CancelFlightReservationCommand cmd, CommandContext ctx) {
          if (!reserved) {
              ctx.fail("Flight must be reserved before it can be cancelled.");
          } else if (cancelled) {
              ctx.fail("Cancelled flight cannot be cancelled again.");
          }
-         ctx.emit(Domain.FlightCancelled.newBuilder()
+         ctx.emit(Flightdomain.FlightCancelled.newBuilder()
                  .setReservationId(cmd.getReservationId()).build());
 
          return Empty.getDefaultInstance();
@@ -86,7 +86,7 @@
       * Handle cancelled event previously emitted.
       */
      @EventHandler
-     public void flightCancelledHandler(Domain.FlightCancelled flightCancelled) {
+     public void flightCancelledHandler(Flightdomain.FlightCancelled flightCancelled) {
          cancelled = true;
      }
  }

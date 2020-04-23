@@ -7,8 +7,9 @@
  import io.cloudstate.javasupport.eventsourced.EventHandler;
  import io.cloudstate.javasupport.eventsourced.EventSourcedEntity;
 
- import bookings.*;
- import bookings.domain.*;
+ import carservice.*;
+ import cardomain.*;
+
  /**
   * A car reservation domain entity.
   */
@@ -49,14 +50,14 @@
       * Put this entity in the reserved state and emit event.
       */
      @CommandHandler
-     public Empty reserveCarHandler(Bookings.ReserveCarCommand cmd, CommandContext ctx) {
+     public Empty reserveCarHandler(Carservice.ReserveCarCommand cmd, CommandContext ctx) {
          if (reserved) {
              ctx.fail("Car room already reserved");
          } else if (cancelled) {
              ctx.fail("Cancelled car cannot be reserved again.");
          }
 
-         ctx.emit(Domain.CarReserved.newBuilder()
+         ctx.emit(Cardomain.CarReserved.newBuilder()
                  .setReservationId(cmd.getReservationId())
                  .setCompany(cmd.getCompany())
                  .setCarType(cmd.getCarType()).build());
@@ -68,7 +69,7 @@
       * Handle reserved event previously emitted.
       */
      @EventHandler
-     public void carReservedHandler(Domain.CarReserved carReserved) {
+     public void carReservedHandler(Cardomain.CarReserved carReserved) {
          reserved = true;
          company = carReserved.getCompany();
          carType = carReserved.getCarType();
@@ -78,13 +79,13 @@
       * Put this entity in the cancelled state and emit event.
       */
      @CommandHandler
-     public Empty cancelCarHandler(Bookings.CancelCarReservationCommand cmd, CommandContext ctx) {
+     public Empty cancelCarHandler(Carservice.CancelCarReservationCommand cmd, CommandContext ctx) {
          if (!reserved) {
              ctx.fail("Car must be reserved before it can be cancelled.");
          } else if (cancelled) {
              ctx.fail("Cancelled car cannot be cancelled again.");
          }
-         ctx.emit(Domain.CarCancelled.newBuilder()
+         ctx.emit(Cardomain.CarCancelled.newBuilder()
                  .setReservationId(cmd.getReservationId()).build());
 
          return Empty.getDefaultInstance();
@@ -94,7 +95,7 @@
       * Handle cancelled event previously emitted.
       */
      @EventHandler
-     public void carCancelledHandler(Domain.CarCancelled carCancelled) {
+     public void carCancelledHandler(Cardomain.CarCancelled carCancelled) {
          cancelled = true;
      }
  }

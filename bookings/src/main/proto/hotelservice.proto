@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+import "cloudstate/entity_key.proto";
+
+package hotelservice;
+
+option java_package = "hotelservice";
+
+message ReserveHotelCommand {
+    string reservationId = 1 [(.cloudstate.entity_key) = true];
+    string hotel = 2;
+    string roomNumber = 3;
+}
+
+message CancelHotelReservationCommand {
+    string reservationId = 1 [(.cloudstate.entity_key) = true];
+}
+
+message HotelReservation {
+    string reservationId = 1;
+    string hotel = 2;
+    string roomNumber = 3;
+}
+
+message GetHotelReservationCommand {
+    string reservationId = 1 [(.cloudstate.entity_key) = true];
+}
+
+message Empty {
+}
+
+service HotelBookingService {
+    rpc ReserveHotel(ReserveHotelCommand) returns (stream Empty);
+
+    rpc CancelHotelReservation(CancelHotelReservationCommand) returns (stream Empty);
+
+    rpc GetHotelReservation(GetHotelReservationCommand) returns (HotelReservation);
+}
