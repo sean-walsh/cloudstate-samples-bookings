@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+import "cloudstate/entity_key.proto";
+
+package bookings;
+
+option java_package = "bookings";
+
+message ReserveFlightCommand {
+    string reservationId = 1 [(.cloudstate.entity_key) = true];
+    string flightNumber = 2;
+}
+
+message CancelFlightReservationCommand {
+    string reservationId = 1 [(.cloudstate.entity_key) = true];
+}
+
+message FlightReservation {
+    string reservationId = 1;
+    string flightNumber = 2;
+}
+
+message GetFlightReservationCommand {
+    string reservationId = 1 [(.cloudstate.entity_key) = true];
+}
+
+message ReserveHotelCommand {
+    string reservationId = 1 [(.cloudstate.entity_key) = true];
+    string hotel = 2;
+    string roomNumber = 3;
+}
+
+message CancelHotelReservationCommand {
+    string reservationId = 1 [(.cloudstate.entity_key) = true];
+}
+
+message HotelReservation {
+    string reservationId = 1;
+    string hotel = 2;
+    roomNumber = 3;
+}
+
+message GetHotelReservationCommand {
+    string reservationId = 1 [(.cloudstate.entity_key) = true];
+}
+
+message ReserveCarCommand {
+    string reservationId = 1 [(.cloudstate.entity_key) = true];
+    string company = 2;
+    string carType = 3;
+}
+
+message CancelCarReservationCommand {
+    string reservationId = 1 [(.cloudstate.entity_key) = true];
+}
+
+message CarReservation {
+    string reservationId = 1;
+    string company = 2;
+    type = 3;
+}
+
+message GetCarReservationCommand {
+    string reservationId = 1 [(.cloudstate.entity_key) = true];
+}
+
+message Empty {
+}
+
+service BookingsService {
+    rpc ReserveFlight(ReserveFlightCommand) returns (stream Empty);
+
+    rpc CancelFlightReservation(CancelFlightReservationCommand) returns (stream Empty);
+
+    rpc GetFlightReservation(GetFlightReservationCommand) returns (FlightReservation);
+
+    rpc ReserveHotel(ReserveHotelCommand) returns (stream Empty);
+
+    rpc CancelHotelReservation(CancelHotelReservationCommand) returns (stream Empty);
+
+    rpc GetHotelReservation(GetHotelReservationCommand) returns (HotelReservation);
+
+    rpc ReserveCar(ReserveCarCommand) returns (stream Empty);
+
+    rpc CancelCarReservation(CancelCarReservationCommand) returns (stream Empty);
+
+    rpc GetCarReservation(GetCarReservationCommand) returns (CarReservation);
+}
