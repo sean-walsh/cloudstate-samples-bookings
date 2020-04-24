@@ -1,7 +1,5 @@
 package bookings;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import io.cloudstate.javasupport.*;
 
 import bookings.domain.*;
@@ -12,11 +10,8 @@ import hoteldomain.*;
 import carservice.*;
 import cardomain.*;
 
-@SpringBootApplication
-public class BookingSpringApplication {
-    public static void main(String[] args) throws java.lang.InterruptedException, java.util.concurrent.ExecutionException {
-        SpringApplication.run(BookingSpringApplication.class, args);
-
+public final class Main {
+    public static void main(String[] args) throws Exception {
         new CloudState()
                 .registerEventSourcedEntity(
                         FlightReservationEntity.class,
