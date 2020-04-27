@@ -8,7 +8,8 @@ option java_package = "flightdomain";
 
 message FlightReserved {
     string reservationId = 1;
-    string flightNumber = 2;
+    string userId = 2;
+    string flightNumber = 3;
 }
 
 message FlightCancelled {

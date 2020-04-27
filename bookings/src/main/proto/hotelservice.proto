@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
 import "cloudstate/entity_key.proto";
 
 package hotelservice;
@@ -8,8 +9,9 @@ option java_package = "hotelservice";
 
 message ReserveHotelCommand {
     string reservationId = 1 [(.cloudstate.entity_key) = true];
-    string hotel = 2;
-    string roomNumber = 3;
+    string userId = 2;
+    string hotel = 3;
+    string roomNumber = 4;
 }
 
 message CancelHotelReservationCommand {
@@ -18,21 +20,24 @@ message CancelHotelReservationCommand {
 
 message HotelReservation {
     string reservationId = 1;
-    string hotel = 2;
-    string roomNumber = 3;
+    string userId = 2;
+    string hotel = 3;
+    string roomNumber = 4;
+    bool cancelled = 6;
+}
+
+message PendingHotelReservation {
+    string reservationId = 1;
 }
 
 message GetHotelReservationCommand {
     string reservationId = 1 [(.cloudstate.entity_key) = true];
 }
 
-message Empty {
-}
-
 service HotelBookingService {
-    rpc ReserveHotel(ReserveHotelCommand) returns (stream Empty);
+    rpc ReserveHotel(ReserveHotelCommand) returns (PendingHotelReservation);
 
-    rpc CancelHotelReservation(CancelHotelReservationCommand) returns (stream Empty);
+    rpc CancelHotelReservation(CancelHotelReservationCommand) returns (google.protobuf.Empty);
 
     rpc GetHotelReservation(GetHotelReservationCommand) returns (HotelReservation);
 }

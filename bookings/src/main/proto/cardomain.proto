@@ -8,8 +8,9 @@ option java_package = "cardomain";
 
 message CarReserved {
     string reservationId = 1;
-    string company = 2;
-    string carType = 3;
+    string userId = 2;
+    string company = 3;
+    string carType = 4;
 }
 
 message CarCancelled {

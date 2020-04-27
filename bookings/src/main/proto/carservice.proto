@@ -9,8 +9,9 @@ option java_package = "carservice";
 
 message ReserveCarCommand {
     string reservationId = 1 [(.cloudstate.entity_key) = true];
-    string company = 2;
-    string carType = 3;
+    string userId = 2;
+    string company = 3;
+    string carType = 4;
 }
 
 message CancelCarReservationCommand {
@@ -19,8 +20,14 @@ message CancelCarReservationCommand {
 
 message CarReservation {
     string reservationId = 1;
-    string company = 2;
-    string carType = 3;
+    string userId = 2;
+    string company = 3;
+    string carType = 4;
+    bool cancelled = 5;
+}
+
+message PendingCarReservation {
+    string reservationId = 1;
 }
 
 message GetCarReservationCommand {
@@ -28,7 +35,7 @@ message GetCarReservationCommand {
 }
 
 service CarBookingService {
-    rpc ReserveCar(ReserveCarCommand) returns (google.protobuf.Empty);
+    rpc ReserveCar(ReserveCarCommand) returns (PendingCarReservation);
 
     rpc CancelCarReservation(CancelCarReservationCommand) returns (google.protobuf.Empty);
 

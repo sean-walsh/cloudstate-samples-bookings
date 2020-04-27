@@ -8,8 +8,9 @@ option java_package = "hoteldomain";
 
 message HotelReserved {
     string reservationId = 1;
-    string hotel = 2;
-    string roomNumber = 3;
+    string userId = 2;
+    string hotel = 3;
+    string roomNumber = 4;
 }
 
 message HotelCancelled {

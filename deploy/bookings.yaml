@@ -5,7 +5,7 @@ metadata:
   name: bookings
 spec:
   containers:
-    - image: bookings-domain:latest
+    - image: bookings:latest
 
 ---
 kind: Role
