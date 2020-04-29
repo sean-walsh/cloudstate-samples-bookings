@@ -47,10 +47,6 @@
             <plugin>
                 <groupId>org.xolstice.maven.plugins</groupId>
                 <artifactId>protobuf-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.xolstice.maven.plugins</groupId>
-                <artifactId>protobuf-maven-plugin</artifactId>
                 <version>0.6.1</version>
                 <configuration>
                     <protocArtifact>
@@ -77,34 +73,36 @@
                     <skip>false</skip>
                     <images>
                         <image>
-                            <name>bookings.domain</name>
+                            <name>cloudstatecadence/bookings</name>
                             <build>
                                 <entryPoint>
                                     <arg>java</arg>
                                     <arg>-cp</arg>
                                     <arg>/maven/*</arg>
-                                    <arg>bookings.domain.FlightReservationEntity</arg>
+                                    <arg>bookings.Main</arg>
                                 </entryPoint>
-                                <entryPoint>
-                                    <arg>java</arg>
-                                    <arg>-cp</arg>
-                                    <arg>/maven/*</arg>
-                                    <arg>bookings.domain.HotelReservationEntity</arg>
-                                </entryPoint>
-                                <entryPoint>
-                                    <arg>java</arg>
-                                    <arg>-cp</arg>
-                                    <arg>/maven/*</arg>
-                                    <arg>bookings.domain.CarReservationEntity</arg>
-                                </entryPoint>
+<!--                                <entryPoint>-->
+<!--                                    <arg>java</arg>-->
+<!--                                    <arg>-cp</arg>-->
+<!--                                    <arg>/maven/*</arg>-->
+<!--                                    <arg>bookings.domain.FlightReservationEntity</arg>-->
+<!--                                </entryPoint>-->
+<!--                                <entryPoint>-->
+<!--                                    <arg>java</arg>-->
+<!--                                    <arg>-cp</arg>-->
+<!--                                    <arg>/maven/*</arg>-->
+<!--                                    <arg>bookings.domain.HotelReservationEntity</arg>-->
+<!--                                </entryPoint>-->
+<!--                                <entryPoint>-->
+<!--                                    <arg>java</arg>-->
+<!--                                    <arg>-cp</arg>-->
+<!--                                    <arg>/maven/*</arg>-->
+<!--                                    <arg>bookings.domain.CarReservationEntity</arg>-->
+<!--                                </entryPoint>-->
                             </build>
                         </image>
                     </images>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.xolstice.maven.plugins</groupId>
-                <artifactId>protobuf-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

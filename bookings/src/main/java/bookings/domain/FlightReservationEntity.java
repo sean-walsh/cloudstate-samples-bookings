@@ -29,12 +29,12 @@
      /**
       * This reservation has received the reserve command and is in the reserved state.
       */
-     private Boolean reserved;
+     private Boolean reserved = false;
 
      /**
       * This reservation has received the cancel command and is in the cancellation state.
       */
-     private Boolean cancelled;
+     private Boolean cancelled = false;
 
      /**
       * Constructor.
@@ -48,7 +48,7 @@
       * Put this entity in the reserved state and emit event.
       */
      @CommandHandler
-     public Empty reserveFlightHandler(ReserveFlightCommand cmd, CommandContext ctx) {
+     public Empty reserveFlight(ReserveFlightCommand cmd, CommandContext ctx) {
          if (reserved)
              ctx.fail("Flight already reserved");
          else if (cancelled)
@@ -66,7 +66,7 @@
       * Handle reserved event previously emitted.
       */
      @EventHandler
-     public void flightReservedHandler(FlightReserved flightReserved) {
+     public void flightReserved(FlightReserved flightReserved) {
          reserved = true;
          userId = flightReserved.getUserId();
          flightNumber = flightReserved.getFlightNumber();
@@ -76,7 +76,7 @@
       * Put this entity in the cancelled state and emit event.
       */
      @CommandHandler
-     public Empty cancelFlightHandler(CancelFlightReservationCommand cmd, CommandContext ctx) {
+     public Empty cancelFlightReservation(CancelFlightReservationCommand cmd, CommandContext ctx) {
          if (!reserved)
              ctx.fail("Flight must be reserved before it can be cancelled.");
          else if (cancelled)
@@ -92,7 +92,7 @@
       * Handle cancelled event previously emitted.
       */
      @EventHandler
-     public void flightCancelledHandler(FlightCancelled flightCancelled) {
+     public void flightCancelled(FlightCancelled flightCancelled) {
          cancelled = true;
      }
 
@@ -100,7 +100,7 @@
       * Get the current state of this reservation.
       */
      @CommandHandler
-     public FlightReservation getReservation(GetFlightReservationCommand cmd, CommandContext ctx) {
+     public FlightReservation getFlightReservation(GetFlightReservationCommand cmd, CommandContext ctx) {
          if (!reserved)
              ctx.fail("Flight must be reserved before it can be retrieved.");
 
@@ -108,6 +108,7 @@
                  .setReservationId(reservationId)
                  .setUserId(userId)
                  .setFlightNumber(flightNumber)
+                 .setCancelled(cancelled)
                  .build();
      }
  }

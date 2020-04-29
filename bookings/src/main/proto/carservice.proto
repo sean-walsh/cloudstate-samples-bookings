@@ -26,16 +26,12 @@ message CarReservation {
     bool cancelled = 5;
 }
 
-message PendingCarReservation {
-    string reservationId = 1;
-}
-
 message GetCarReservationCommand {
     string reservationId = 1 [(.cloudstate.entity_key) = true];
 }
 
 service CarBookingService {
-    rpc ReserveCar(ReserveCarCommand) returns (PendingCarReservation);
+    rpc ReserveCar(ReserveCarCommand) returns (google.protobuf.Empty);
 
     rpc CancelCarReservation(CancelCarReservationCommand) returns (google.protobuf.Empty);
 

@@ -36,12 +36,12 @@
      /**
       * This reservation has received the reserve command and is in the reserved state.
       */
-     private Boolean reserved;
+     private Boolean reserved = false;
 
      /**
       * This reservation has received the cancel command and is in the cancellation state.
       */
-     private Boolean cancelled;
+     private Boolean cancelled = false;
 
      /**
       * Constructor.
@@ -55,7 +55,7 @@
       * Put this entity in the reserved state and emit event.
       */
      @CommandHandler
-     public Empty reserveCarHandler(ReserveCarCommand cmd, CommandContext ctx) {
+     public Empty reserveCar(ReserveCarCommand cmd, CommandContext ctx) {
          if (reserved)
              ctx.fail("Car room already reserved");
          else if (cancelled)
@@ -74,7 +74,7 @@
       * Handle reserved event previously emitted.
       */
      @EventHandler
-     public void carReservedHandler(CarReserved carReserved) {
+     public void carReserved(CarReserved carReserved) {
          reserved = true;
          userId = carReserved.getUserId();
          company = carReserved.getCompany();
@@ -85,7 +85,7 @@
       * Put this entity in the cancelled state and emit event.
       */
      @CommandHandler
-     public Empty cancelCarHandler(CancelCarReservationCommand cmd, CommandContext ctx) {
+     public Empty cancelCarReservation(CancelCarReservationCommand cmd, CommandContext ctx) {
          if (!reserved)
              ctx.fail("Car must be reserved before it can be cancelled.");
          else if (cancelled)
@@ -101,7 +101,7 @@
       * Handle cancelled event previously emitted.
       */
      @EventHandler
-     public void carCancelledHandler(CarCancelled carCancelled) {
+     public void carCancelled(CarCancelled carCancelled) {
          cancelled = true;
      }
 
@@ -109,15 +109,16 @@
       * Get the current state of this reservation.
       */
      @CommandHandler
-     public CarReservation getReservation(GetCarReservationCommand cmd, CommandContext ctx) {
+     public CarReservation getCarReservation(GetCarReservationCommand cmd, CommandContext ctx) {
          if (!reserved)
              ctx.fail("Car must be reserved before it can be retrieved.");
 
-             return CarReservation.newBuilder()
-                     .setReservationId(reservationId)
-                     .setUserId(userId)
-                     .setCompany(company)
-                     .setCarType(carType)
-                     .build();
-         }
+         return CarReservation.newBuilder()
+                 .setReservationId(reservationId)
+                 .setUserId(userId)
+                 .setCompany(company)
+                 .setCarType(carType)
+                 .setCancelled(cancelled)
+                 .build();
+     }
  }

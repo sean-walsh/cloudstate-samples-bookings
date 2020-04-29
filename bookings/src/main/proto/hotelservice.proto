@@ -26,16 +26,12 @@ message HotelReservation {
     bool cancelled = 6;
 }
 
-message PendingHotelReservation {
-    string reservationId = 1;
-}
-
 message GetHotelReservationCommand {
     string reservationId = 1 [(.cloudstate.entity_key) = true];
 }
 
 service HotelBookingService {
-    rpc ReserveHotel(ReserveHotelCommand) returns (PendingHotelReservation);
+    rpc ReserveHotel(ReserveHotelCommand) returns (google.protobuf.Empty);
 
     rpc CancelHotelReservation(CancelHotelReservationCommand) returns (google.protobuf.Empty);
 
