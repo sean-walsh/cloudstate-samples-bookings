@@ -18,6 +18,7 @@
     }
   </code></pre>
 * Download and install VirtualBox.
+  note: If using Catalina, the install will fail and you will have to grant the permissions, just follow the prompts, then reinstall.
 * Install homebrew applications:
   <pre><code>
   brew install minikube
@@ -26,7 +27,9 @@
   </code></pre>
 * Start minikube:
   <pre><code>minikube start --vm-driver=virtualbox --cpus 4 --memory 4096</code></pre>
-* Now to build and deploy cloudstate itself, so in the cloudstate folder you cloned:
+* Now to build and deploy cloudstate itself, so in the cloudstate folder you cloned, in a terminal window (brew install SBT if necessary):
+  note: you will be using the internally provided docker service within minikube, you don't even have to have Docker Desktop installed and 
+  it's probably better to shut it down for this exercise. The command below needs to be executed in each terminal window you will be using.
   <pre><code>eval $(minikube docker-env)</code></pre>
   <pre><code>sbt -Ddocker.tag=dev</code></pre>
   Now from within SBT, assuming you are only using the inmemory store:
