@@ -21,7 +21,7 @@
 * Install homebrew applications:
   <pre><code>
   brew install minikube
-  brew install kubernetes-cli
+  brew install kubectl
   brew install grpcurl
   </code></pre>
 * Start minikube:
