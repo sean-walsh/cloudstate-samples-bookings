@@ -1,6 +1,6 @@
-#A Cloudstate sample application for reserving hotel/flight/car.
+# A Cloudstate sample application for reserving hotel/flight/car.
 
-##Instructions for running locally on a mac with minikube.
+## Instructions for running locally on a mac with minikube.
 
 * Clone this repo.
 * clone Cloudstate, git@github.com:cloudstateio/cloudstate.git
