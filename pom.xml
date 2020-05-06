@@ -34,6 +34,11 @@
             <version>1.16.1</version>
         </dependency>
         <dependency>
+            <groupId>com.google.api.grpc</groupId>
+            <artifactId>proto-google-common-protos</artifactId>
+            <version>1.14.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.8</version>
@@ -149,7 +154,7 @@
                                     <arg>java</arg>
                                     <arg>-cp</arg>
                                     <arg>/maven/*</arg>
-                                    <arg>bookings.Main</arg>
+                                    <arg>bookings.BookingsApplication</arg>
                                 </entryPoint>
                             </build>
                         </image>

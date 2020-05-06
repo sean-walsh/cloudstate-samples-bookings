@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
 import "cloudstate/entity_key.proto";
 
 package flightservice;
@@ -29,9 +30,24 @@ message GetFlightReservationCommand {
 }
 
 service FlightBookingService {
-    rpc ReserveFlight(ReserveFlightCommand) returns (google.protobuf.Empty);
+    rpc ReserveFlight(ReserveFlightCommand) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/bookings/reserve-flight",
+            body: "*",
+        };
+    }
 
-    rpc CancelFlightReservation(CancelFlightReservationCommand) returns (google.protobuf.Empty);
+    rpc CancelFlightReservation(CancelFlightReservationCommand) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/bookings/cancel-flight-reservation",
+            body: "*",
+        };
+    }
 
-    rpc GetFlightReservation(GetFlightReservationCommand) returns (FlightReservation);
+    rpc GetFlightReservation(GetFlightReservationCommand) returns (FlightReservation) {
+        option (google.api.http) = {
+            post: "/bookings/get-flight-reservation",
+            body: "*",
+        };
+    }
 }

@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
 import "cloudstate/entity_key.proto";
 
 package carservice;
@@ -31,9 +32,24 @@ message GetCarReservationCommand {
 }
 
 service CarBookingService {
-    rpc ReserveCar(ReserveCarCommand) returns (google.protobuf.Empty);
+    rpc ReserveCar(ReserveCarCommand) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/bookings/reserve-car",
+            body: "*",
+        };
+    }
 
-    rpc CancelCarReservation(CancelCarReservationCommand) returns (google.protobuf.Empty);
+    rpc CancelCarReservation(CancelCarReservationCommand) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/bookings/cancel-car-reservation",
+            body: "*",
+        };
+    }
 
-    rpc GetCarReservation(GetCarReservationCommand) returns (CarReservation);
+    rpc GetCarReservation(GetCarReservationCommand) returns (CarReservation) {
+        option (google.api.http) = {
+            post: "/bookings/get-car-reservation",
+            body: "*",
+        };
+    }
 }

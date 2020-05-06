@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
 import "cloudstate/entity_key.proto";
 
 package hotelservice;
@@ -31,9 +32,24 @@ message GetHotelReservationCommand {
 }
 
 service HotelBookingService {
-    rpc ReserveHotel(ReserveHotelCommand) returns (google.protobuf.Empty);
+    rpc ReserveHotel(ReserveHotelCommand) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/bookings/reserve-hotel",
+            body: "*",
+        };
+    }
 
-    rpc CancelHotelReservation(CancelHotelReservationCommand) returns (google.protobuf.Empty);
+    rpc CancelHotelReservation(CancelHotelReservationCommand) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/bookings/cancel-hotel-reservation",
+            body: "*",
+        };
+    }
 
-    rpc GetHotelReservation(GetHotelReservationCommand) returns (HotelReservation);
+    rpc GetHotelReservation(GetHotelReservationCommand) returns (HotelReservation) {
+        option (google.api.http) = {
+            post: "/bookings/get-hotel-reservation",
+            body: "*",
+        };
+    }
 }
