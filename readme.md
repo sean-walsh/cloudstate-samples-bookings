@@ -59,7 +59,7 @@
 * In a terminal window, switch into where you cloned this project, then:
 <pre><code>eval $(minikube docker-env)</code></pre>
 <pre><code>mvn clean install</code></pre>
-<pre><code>kubectl apply -f deploy/bookings.yaml</code></pre>
+<pre><code>kubectl apply -f deploy/wirelessmesh.yaml</code></pre>
 * Now this sample is running with cloudstate on your local kubernetes environment. Let's expose a port in order to send GRPC commands and test it out.
 <pre><code>kubectl expose deployment bookings-deployment --port=8013 --type=NodePort</code></pre>
 * Issue the following command and record the URL you'll use to interact with your service:
